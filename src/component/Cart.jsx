@@ -9,13 +9,34 @@ const reducer = (state, action) => {
     return []
   }
   if (action.type === 'REST_LIST') {
-    return phonesList
+    const updatedState = phonesList.map((item) => ({
+      ...item,
+      amount: 1,
+    }))
+    return updatedState
+  }
+
+  if (action.type === 'ADD_ONE') {
+    return state.map((item) =>
+      item.id === action.payload.id
+        ? { ...item, amount: (item.amount += 1) }
+        : item
+    )
+  }
+  if (action.type === 'REMOVE_ONE') {
+    // First, decrement the amount if it matches the condition
+    const updatedState = state.map((item) =>
+      item.id === action.payload.id
+        ? { ...item, amount: item.amount - 1 }
+        : item
+    )
+
+    return updatedState.filter((item) => item.amount > 0)
   }
 }
 
 const Cart = () => {
   const [dataList, setDataList] = useState(phonesList)
-
   const [state, dispatch] = useReducer(reducer, dataList)
 
   // removing item from lsit
@@ -32,24 +53,32 @@ const Cart = () => {
     dispatch({ type: 'REST_LIST' })
   }
 
+  const addOne = (id) => {
+    dispatch({ type: 'ADD_ONE', payload: { id } })
+  }
+
+  const removeOne = (id) => {
+    dispatch({ type: 'REMOVE_ONE', payload: { id } })
+  }
+
   return (
     <>
       <nav className="w-[100%] h-[10vh] flex flex-row text-center items-center justify-center gap-4 bg-teal-500 text-white">
         <h1>UseReducer</h1>
-        <h1>Cart Items: 1</h1>
+        <h1>1</h1>
       </nav>
       <div>
         <div className="flex flex-col text-center items-center justify-center">
           <h1>YOUR BAG</h1>
           <div className="w-[90vw] h-[90vh] flex flex-col items-center gap-2 text-center overflow-auto">
-            {state.map((item, index) => (
+            {state?.map((item, index) => (
               <div
                 key={index}
                 className="flex-row flex w-[100%] h-[150px] bg-slate-500 text-center items-center justify-between p-4 rounded-lg"
               >
                 <div className="text-start text-white">
                   <h1 className="text-[18px]">{item.name}</h1>
-                  <h3 className="text-[12px]">${item.price}</h3>
+                  <h3 className="text-[12px]">${item.price * item.amount}</h3>
                   <button
                     onClick={() => {
                       removeItem(item.id)
@@ -61,9 +90,23 @@ const Cart = () => {
                 </div>
 
                 <div className="text-white text-[12px] gap-4 h-[100%] flex flex-col text-center items-center justify-center">
-                  <button className="bg-black pr-2 pl-2">+</button>
+                  <button
+                    onClick={() => {
+                      addOne(item.id)
+                    }}
+                    className="bg-black pr-2 pl-2"
+                  >
+                    +
+                  </button>
                   <h2>{item.amount}</h2>
-                  <button className="bg-black pr-2 pl-2">-</button>
+                  <button
+                    onClick={() => {
+                      removeOne(item.id)
+                    }}
+                    className="bg-black pr-2 pl-2"
+                  >
+                    -
+                  </button>
                 </div>
               </div>
             ))}
