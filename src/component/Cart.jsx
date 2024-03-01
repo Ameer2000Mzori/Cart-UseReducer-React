@@ -54,13 +54,15 @@ const Cart = () => {
           </div>
         </div>
       </div>
-      <footer>
+      <footer className="w-[100%] h-[10vh] flex flex-row text-center items-center justify-evenly gap-4 bg-teal-500 text-white">
         <div>
           <h1>total</h1>
           <h2>$21000.20</h2>
         </div>
-        <button>Clear Cart</button>
-        <button>Rest Cart</button>
+        <div className="flex flex-col gap-2">
+          <button>Clear Cart</button>
+          <button>Rest Cart</button>
+        </div>
       </footer>
     </>
   )
