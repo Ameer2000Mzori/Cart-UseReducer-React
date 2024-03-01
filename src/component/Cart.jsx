@@ -38,6 +38,15 @@ const reducer = (state, action) => {
 const Cart = () => {
   const [dataList, setDataList] = useState(phonesList)
   const [state, dispatch] = useReducer(reducer, dataList)
+  const [totalItems, setTotalItems] = useState(0)
+  const [totalPrice, setTotalPrice] = useState(0)
+  useEffect(() => {
+    // Calculate total items
+    const total = state.reduce((acc, item) => acc + item.amount, 0)
+    const price = state.reduce((acc, item) => acc + item.price * item.amount, 0)
+    setTotalItems(total)
+    setTotalPrice(price)
+  }, [state])
 
   // removing item from lsit
   const removeItem = (id) => {
@@ -65,16 +74,16 @@ const Cart = () => {
     <>
       <nav className="w-[100%] h-[10vh] flex flex-row text-center items-center justify-center gap-4 bg-teal-500 text-white">
         <h1>UseReducer</h1>
-        <h1>1</h1>
+        <h1>items : {totalItems}</h1>
       </nav>
       <div>
         <div className="flex flex-col text-center items-center justify-center">
           <h1>YOUR BAG</h1>
-          <div className="w-[90vw] h-[90vh] flex flex-col items-center gap-2 text-center overflow-auto">
+          <div className="w-[90vw] h-[80vh] flex flex-col items-center gap-2 text-center overflow-auto">
             {state?.map((item, index) => (
               <div
                 key={index}
-                className="flex-row flex w-[100%] h-[150px] bg-slate-500 text-center items-center justify-between p-4 rounded-lg"
+                className="flex-row flex w-[100%] h-[150px] bg-slate-500 text-center items-center justify-between p-4 rounded-lg overflow-auto"
               >
                 <div className="text-start text-white">
                   <h1 className="text-[18px]">{item.name}</h1>
@@ -116,7 +125,9 @@ const Cart = () => {
       <footer className="w-[100%] h-[10vh] flex flex-row text-center items-center justify-evenly gap-4 bg-teal-500 text-white">
         <div>
           <h1>total</h1>
-          <h2>$4230</h2>
+          <h2>
+            <div>Total price: ${totalPrice}</div>
+          </h2>
         </div>
         <div className="flex flex-col gap-2">
           <button onClick={ClearList} className="bg-black pr-2 pl-2">
