@@ -21,7 +21,7 @@ const Cart = () => {
             {state.map((item, index) => (
               <div
                 key={index}
-                className="flex-row flex w-[100%] h-[200px] bg-zinc-500 text-center items-center justify-between p-4 rounded-lg"
+                className="flex-row flex w-[100%] h-[200px] bg-slate-500 text-center items-center justify-between p-4 rounded-lg"
               >
                 <div className="text-start text-white">
                   <h1 className="text-[18px]">{item.name}</h1>
