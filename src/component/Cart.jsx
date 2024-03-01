@@ -10,8 +10,18 @@ const Cart = () => {
 
   return (
     <div>
-      {state.map((item) => (
-        <div>{item.name}</div>
+      {state.map((item, index) => (
+        <div key={index}>
+          <img src={item.image} alt="" />
+          <h1>{item.name}</h1>
+          <h3>${item.price}</h3>
+          <button>Remove</button>
+          <div>
+            <button>add one</button>
+            <h2>{item.amount}</h2>
+            <button>remove one</button>
+          </div>
+        </div>
       ))}
     </div>
   )
