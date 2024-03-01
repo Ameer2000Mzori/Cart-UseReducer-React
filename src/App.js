@@ -1,6 +1,7 @@
 import react from 'react'
+import Cart from './component/Cart.jsx'
 function App() {
-  return <h1>Hello World</h1>
+  return <Cart />
 }
 
 export default App
